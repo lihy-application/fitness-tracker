@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>测试页面</title>
+</head>
+<body>
+    <h1>健身打卡测试</h1>
+    <button onclick="testLocalStorage()">测试 LocalStorage</button>
+    <button onclick="clearData()">清除数据</button>
+    <div id="output"></div>
+
+    <script>
+        function testLocalStorage() {
+            try {
+                const test = JSON.parse(localStorage.getItem('fitnessWorkouts')) || [];
+                document.getElementById('output').innerHTML = `
+                    <p>✅ LocalStorage 正常工作</p>
+                    <p>当前记录数: ${test.length}</p>
+                    <pre>${JSON.stringify(test, null, 2)}</pre>
+                `;
+            } catch (e) {
+                document.getElementById('output').innerHTML = `<p>❌ 错误: ${e.message}</p>`;
+            }
+        }
+
+        function clearData() {
+            localStorage.removeItem('fitnessWorkouts');
+            alert('数据已清除');
+            testLocalStorage();
+        }
+    </script>
+</body>
+</html>

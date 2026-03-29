@@ -7,12 +7,29 @@
   "background_color": "#F0F9FF",
   "theme_color": "#4ECDC4",
   "orientation": "portrait-primary",
+  "scope": "/",
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "categories": ["fitness", "health"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "快速打卡",
+      "short_name": "打卡",
+      "description": "快速记录今日运动",
+      "url": "./index.html",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>",
+          "sizes": "96x96"
+        }
+      ]
     }
   ]
 }
