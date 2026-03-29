@@ -437,13 +437,24 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
 
             // 本周目标进度
             const startOfWeek = new Date();
+            startOfWeek.setHours(0, 0, 0, 0);
             startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
             const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setHours(23, 59, 59, 999);
             endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+            const today = new Date();
+            today.setHours(12, 0, 0, 0); // 设置为中午12点
 
             const weeklyCount = workouts.filter(w => {
                 const workoutDate = new Date(w.date);
-                return workoutDate >= startOfWeek && workoutDate <= endOfWeek;
+                workoutDate.setHours(12, 0, 0, 0); // 设置为中午12点避免时区问题
+                // 补打卡（本周之前的）不计入本周目标
+                const isBeforeThisWeek = workoutDate < startOfWeek;
+                const isAfterThisWeek = workoutDate > endOfWeek;
+                // 今天或未来日期不算补卡，计入本周目标
+                const isTodayOrFuture = workoutDate >= startOfWeek && workoutDate <= endOfWeek && !w.isMakeup;
+                return isTodayOrFuture;
             }).length;
 
             document.getElementById('weeklyTarget').textContent = `${weeklyCount}/${targets.weekly}`;
