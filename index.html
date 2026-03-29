@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💪 小P健身打卡助手</title>
-    <meta name="description" content="小P健身打卡助手 - 清爽打卡 · 轻松记录每一次运动">
-    <meta name="theme-color" content="#4ECDC4">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
-    <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -106,15 +102,10 @@
             <div class="bg-white rounded-2xl p-5 card-shadow cute-border cute-shadow cute-hover">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center text-2xl">🎯</div>
-                    <div class="flex-1">
+                    <div>
                         <p class="text-gray-500 text-sm">本周目标</p>
-                        <div class="flex items-center gap-2">
-                            <p class="text-2xl font-bold text-warning" id="weeklyTarget">0/4</p>
-                            <p class="text-xs text-gray-400">次</p>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
-                            <div id="weeklyProgress" class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                        </div>
+                        <p class="text-2xl font-bold text-warning" id="weeklyTarget">0/4</p>
+                        <p class="text-xs text-gray-400">次</p>
                     </div>
                 </div>
             </div>
@@ -175,7 +166,7 @@
                             <i class="fa fa-check-circle mr-2"></i> 完成打卡 ✅
                         </button>
                     </form>
-                    
+
                     <div class="mt-4 p-4 bg-orange-50 rounded-xl border border-orange-200">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-sm font-medium text-orange-700">📌 本月补打卡次数</span>
@@ -251,20 +242,6 @@
 
     <footer class="text-center py-6 text-gray-500 text-sm">
         <p>💪 小P健身打卡助手 · 清爽记录每一天 ✨</p>
-        <div id="installPrompt" class="hidden mt-4">
-            <button onclick="installApp()" class="bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-xl font-bold text-sm cute-shadow cute-hover transition-all">
-                📱 添加到主屏幕
-            </button>
-        </div>
-        <div id="installInstructions" class="hidden mt-4 text-left bg-white rounded-xl p-4 text-xs">
-            <p class="font-bold mb-2">📱 添加到主屏幕的方法：</p>
-            <p class="mb-1"><strong>iPhone/iPad:</strong></p>
-            <p class="ml-4 text-gray-600">1. 点击底部的"分享"按钮 ⎋</p>
-            <p class="ml-4 text-gray-600">2. 选择"添加到主屏幕"</p>
-            <p class="mb-1 mt-2"><strong>Android:</strong></p>
-            <p class="ml-4 text-gray-600">1. 点击浏览器菜单 ⋮</p>
-            <p class="ml-4 text-gray-600">2. 选择"添加到主屏幕"或"安装应用"</p>
-        </div>
     </footer>
 
     <div id="successToast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg z-50 opacity-0 pointer-events-none transition-all duration-300">
@@ -272,45 +249,6 @@
     </div>
 
     <script>
-        // PWA 安装提示
-        let deferredPrompt;
-        const installPromptDiv = document.getElementById('installPrompt');
-        const installInstructionsDiv = document.getElementById('installInstructions');
-
-        // 检测是否在移动设备上
-        function isMobile() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        // 显示安装提示
-        function showInstallPrompt() {
-            if (isMobile()) {
-                installInstructionsDiv.classList.remove('hidden');
-            }
-        }
-
-        // 监听 beforeinstallprompt 事件
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installPromptDiv.classList.remove('hidden');
-        });
-
-        // 安装应用
-        function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        installPromptDiv.classList.add('hidden');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                showInstallPrompt();
-            }
-        }
-
         // 数据存储
         let workouts = JSON.parse(localStorage.getItem('fitnessWorkouts')) || [];
         let targets = { weekly: 4, monthly: 20, makeup: 3 };
@@ -329,20 +267,16 @@
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
+            // 设置默认日期为今天
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('workoutDate');
+            if (dateInput) {
+                dateInput.value = today;
+            }
             init();
-            // 延迟显示安装提示
-            setTimeout(() => {
-                if (!deferredPrompt) {
-                    showInstallPrompt();
-                }
-            }, 3000);
         });
 
         function init() {
-            // 设置默认日期为今天
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('workoutDate').value = today;
-            
             renderCalendar();
             updateStats();
             renderHistory();
@@ -352,26 +286,26 @@
         // 提交打卡
         function handleSubmit(e) {
             e.preventDefault();
-            
+
             const type = document.getElementById('workoutType').value;
             const duration = parseInt(document.getElementById('duration').value);
             const calories = parseInt(document.getElementById('calories').value);
             const notes = document.getElementById('notes').value.trim();
             const workoutDateStr = document.getElementById('workoutDate').value;
-            
+
             if (!duration || !calories || !workoutDateStr) {
                 alert('请填写完整信息哦~ 😊');
                 return;
             }
-            
+
             const today = new Date();
             const todayStr = today.toISOString().split('T')[0];
             const selectedDate = new Date(workoutDateStr);
             const selectedDateStr = selectedDate.toISOString().split('T')[0];
-            
+
             // 判断是否为补打卡
             const isMakeup = selectedDateStr !== todayStr;
-            
+
             // 如果是补打卡，检查补打卡次数
             if (isMakeup) {
                 const monthlyMakeupCount = getMonthlyMakeupCount();
@@ -380,7 +314,7 @@
                     return;
                 }
             }
-            
+
             // 检查该日期是否已经打卡
             const alreadyWorkout = workouts.some(w => w.date === selectedDateStr);
             if (alreadyWorkout) {
@@ -388,7 +322,7 @@
                 if (!confirm) return;
                 workouts = workouts.filter(w => w.date !== selectedDateStr);
             }
-            
+
             // 添加新记录
             const newWorkout = {
                 id: Date.now(),
@@ -398,6 +332,8 @@
                 calories,
                 notes,
                 isMakeup,
+                timestamp: Date.now()
+            };
                 timestamp: Date.now()
             };
             
@@ -450,27 +386,20 @@
                 const hasWorkout = workouts.some(w => w.date === dateStr);
                 const isToday = dateStr === todayStr;
                 const isMakeup = workouts.some(w => w.date === dateStr && w.isMakeup);
-                
+
                 const dayCell = document.createElement('div');
-                let bgColor = hasWorkout ? 'workout' : 'bg-gray-100 border border-gray-200';
-                if (isMakeup) {
-                    bgColor = 'workout'; // 补打卡同样显示为已打卡
-                }
-                dayCell.className = `calendar-day ${bgColor} ${isToday ? 'border-2 border-primary scale-110' : ''} ${isMakeup ? 'relative' : ''}`;
-                
-                // 创建日期文本
-                const dayText = document.createElement('span');
-                dayText.textContent = day;
-                dayCell.appendChild(dayText);
-                
+                dayCell.className = `calendar-day ${hasWorkout ? 'workout' : 'bg-gray-100 border border-gray-200'} ${isToday ? 'border-2 border-primary scale-110' : ''}`;
+                dayCell.textContent = day;
+
                 // 如果是补打卡，添加标记
                 if (isMakeup) {
                     const makeupBadge = document.createElement('span');
                     makeupBadge.className = 'absolute top-0 right-0 text-xs';
                     makeupBadge.textContent = '📌';
+                    dayCell.style.position = 'relative';
                     dayCell.appendChild(makeupBadge);
                 }
-                
+
                 // 点击查看当天记录
                 dayCell.addEventListener('click', () => {
                     const dayWorkouts = workouts.filter(w => w.date === dateStr);
@@ -484,7 +413,7 @@
 ${workout.isMakeup ? '📌 补打卡' : ''}`);
                     }
                 });
-                
+
                 calendarGrid.appendChild(dayCell);
             }
         }
@@ -519,15 +448,14 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
             }).length;
             
             document.getElementById('weeklyTarget').textContent = `${weeklyCount}/${targets.weekly}`;
-            
-            // 更新本周进度条
-            const progressPercentage = Math.min((weeklyCount / targets.weekly) * 100, 100);
-            document.getElementById('weeklyProgress').style.width = `${progressPercentage}%`;
-            
+
             // 更新补打卡次数
             const makeupCount = getMonthlyMakeupCount();
-            document.getElementById('makeupCount').textContent = `${makeupCount}/${targets.makeup}`;
-            
+            const makeupCountElement = document.getElementById('makeupCount');
+            if (makeupCountElement) {
+                makeupCountElement.textContent = `${makeupCount}/${targets.makeup}`;
+            }
+
             // 总打卡次数
             document.getElementById('totalWorkouts').textContent = workouts.length;
             document.getElementById('recordCount').textContent = `共${workouts.length}条记录`;
