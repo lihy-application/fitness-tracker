@@ -328,8 +328,6 @@
         }
 
         // 初始化
-
-        // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             init();
             // 延迟显示安装提示
@@ -389,7 +387,6 @@
                 const confirm = window.confirm(`${selectedDateStr} 已经打过卡啦，要更新当天的记录吗？`);
                 if (!confirm) return;
                 workouts = workouts.filter(w => w.date !== selectedDateStr);
-            }
             }
             
             // 添加新记录
