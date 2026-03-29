@@ -6,6 +6,8 @@
     <title>💪 小P健身打卡助手</title>
     <meta name="description" content="小P健身打卡助手 - 清爽打卡 · 轻松记录每一次运动">
     <meta name="theme-color" content="#4ECDC4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
     <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -108,7 +110,7 @@
                     <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center text-2xl">🎯</div>
                     <div>
                         <p class="text-gray-500 text-sm">本周目标</p>
-                        <p class="text-2xl font-bold text-warning" id="weeklyTarget">0/5</p>
+                        <p class="text-2xl font-bold text-warning" id="weeklyTarget">0/4</p>
                         <p class="text-xs text-gray-400">次</p>
                     </div>
                 </div>
@@ -133,6 +135,10 @@
                         <span class="text-2xl">✍️</span> 今日打卡
                     </h2>
                     <form id="workoutForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-600 mb-2 font-medium">打卡日期 📅</label>
+                            <input type="date" id="workoutDate" class="w-full rounded-xl border-2 border-primary/30 p-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                        </div>
                         <div>
                             <label class="block text-gray-600 mb-2 font-medium">运动类型 🏋️</label>
                             <select id="workoutType" class="w-full rounded-xl border-2 border-primary/30 p-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
@@ -166,6 +172,13 @@
                             <i class="fa fa-check-circle mr-2"></i> 完成打卡 ✅
                         </button>
                     </form>
+                    <div class="mt-4 p-4 bg-orange-50 rounded-xl border border-orange-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-orange-700">📌 本月补打卡次数</span>
+                            <span class="text-lg font-bold text-orange-600" id="makeupCount">0/3</span>
+                        </div>
+                        <p class="text-xs text-orange-600">每月最多可补打卡 3 次</p>
+                    </div>
                 </div>
             </div>
 
@@ -260,26 +273,22 @@
         const installPromptDiv = document.getElementById('installPrompt');
         const installInstructionsDiv = document.getElementById('installInstructions');
 
-        // 检测是否在移动设备上
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
 
-        // 显示安装提示
         function showInstallPrompt() {
             if (isMobile()) {
                 installInstructionsDiv.classList.remove('hidden');
             }
         }
 
-        // 监听 beforeinstallprompt 事件
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             installPromptDiv.classList.remove('hidden');
         });
 
-        // 安装应用
         function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -296,18 +305,27 @@
 
         // 数据存储
         let workouts = JSON.parse(localStorage.getItem('fitnessWorkouts')) || [];
-        let targets = { weekly: 5, monthly: 20 };
+        let targets = { weekly: 4, monthly: 20, makeup: 3 };
         let currentDate = new Date();
+
+        function getMonthlyMakeupCount() {
+            const thisMonth = new Date().toISOString().slice(0, 7);
+            return workouts.filter(w => {
+                const workoutDate = new Date(w.date);
+                const workoutMonth = workoutDate.toISOString().slice(0, 7);
+                const isToday = w.date === new Date().toISOString().split('T')[0];
+                return workoutMonth === thisMonth && !isToday && w.isMakeup;
+            }).length;
+        }
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('workoutDate');
+            if (dateInput) {
+                dateInput.value = today;
+            }
             init();
-            // 延迟显示安装提示
-            setTimeout(() => {
-                if (!deferredPrompt) {
-                    showInstallPrompt();
-                }
-            }, 3000);
         });
 
         function init() {
@@ -320,53 +338,63 @@
         // 提交打卡
         function handleSubmit(e) {
             e.preventDefault();
-            
+
             const type = document.getElementById('workoutType').value;
             const duration = parseInt(document.getElementById('duration').value);
             const calories = parseInt(document.getElementById('calories').value);
             const notes = document.getElementById('notes').value.trim();
-            
-            if (!duration || !calories) {
+            const workoutDateStr = document.getElementById('workoutDate').value;
+
+            if (!duration || !calories || !workoutDateStr) {
                 alert('请填写完整信息哦~ 😊');
                 return;
             }
-            
+
             const today = new Date();
-            const dateStr = today.toISOString().split('T')[0];
-            
-            // 检查今天是否已经打卡
-            const alreadyWorkout = workouts.some(w => w.date === dateStr);
-            if (alreadyWorkout) {
-                const confirm = window.confirm('今天已经打过卡啦，要更新今天的记录吗？');
-                if (!confirm) return;
-                workouts = workouts.filter(w => w.date !== dateStr);
+            const todayStr = today.toISOString().split('T')[0];
+            const selectedDate = new Date(workoutDateStr);
+            const selectedDateStr = selectedDate.toISOString().split('T')[0];
+
+            const isMakeup = selectedDateStr !== todayStr;
+
+            if (isMakeup) {
+                const monthlyMakeupCount = getMonthlyMakeupCount();
+                if (monthlyMakeupCount >= targets.makeup) {
+                    alert(`本月补打卡次数已用完！每月最多补打卡 ${targets.makeup} 次 😢`);
+                    return;
+                }
             }
-            
-            // 添加新记录
+
+            const alreadyWorkout = workouts.some(w => w.date === selectedDateStr);
+            if (alreadyWorkout) {
+                const confirm = window.confirm(`${selectedDateStr} 已经打过卡啦，要更新当天的记录吗？`);
+                if (!confirm) return;
+                workouts = workouts.filter(w => w.date !== selectedDateStr);
+            }
+
             const newWorkout = {
                 id: Date.now(),
-                date: dateStr,
+                date: selectedDateStr,
                 type,
                 duration,
                 calories,
                 notes,
+                isMakeup,
                 timestamp: Date.now()
             };
-            
+
             workouts.unshift(newWorkout);
             localStorage.setItem('fitnessWorkouts', JSON.stringify(workouts));
-            
-            // 重置表单
+
             document.getElementById('workoutForm').reset();
-            
-            // 显示成功提示
+            document.getElementById('workoutDate').value = todayStr;
+
             const toast = document.getElementById('successToast');
             toast.style.opacity = '1';
             setTimeout(() => {
                 toast.style.opacity = '0';
             }, 2000);
-            
-            // 更新界面
+
             renderCalendar();
             updateStats();
             renderHistory();
@@ -401,12 +429,20 @@
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const hasWorkout = workouts.some(w => w.date === dateStr);
                 const isToday = dateStr === todayStr;
-                
+                const isMakeup = workouts.some(w => w.date === dateStr && w.isMakeup);
+
                 const dayCell = document.createElement('div');
                 dayCell.className = `calendar-day ${hasWorkout ? 'workout' : 'bg-gray-100 border border-gray-200'} ${isToday ? 'border-2 border-primary scale-110' : ''}`;
                 dayCell.textContent = day;
-                
-                // 点击查看当天记录
+
+                if (isMakeup) {
+                    const makeupBadge = document.createElement('span');
+                    makeupBadge.className = 'absolute top-0 right-0 text-xs';
+                    makeupBadge.textContent = '📌';
+                    dayCell.style.position = 'relative';
+                    dayCell.appendChild(makeupBadge);
+                }
+
                 dayCell.addEventListener('click', () => {
                     const dayWorkouts = workouts.filter(w => w.date === dateStr);
                     if (dayWorkouts.length > 0) {
@@ -415,10 +451,11 @@
 运动类型：${workout.type}
 时长：${workout.duration} 分钟
 消耗：${workout.calories} 大卡
-备注：${workout.notes || '无'}`);
+备注：${workout.notes || '无'}
+${workout.isMakeup ? '📌 补打卡' : ''}`);
                     }
                 });
-                
+
                 calendarGrid.appendChild(dayCell);
             }
         }
@@ -443,18 +480,30 @@
             
             // 本周目标进度
             const startOfWeek = new Date();
+            startOfWeek.setHours(0, 0, 0, 0);
             startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
             const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setHours(23, 59, 59, 999);
             endOfWeek.setDate(endOfWeek.getDate() + 6);
-            
+
+            const today = new Date();
+            today.setHours(12, 0, 0, 0);
+
             const weeklyCount = workouts.filter(w => {
                 const workoutDate = new Date(w.date);
-                return workoutDate >= startOfWeek && workoutDate <= endOfWeek;
+                workoutDate.setHours(12, 0, 0, 0);
+                const isTodayOrFuture = workoutDate >= startOfWeek && workoutDate <= endOfWeek && !w.isMakeup;
+                return isTodayOrFuture;
             }).length;
-            
+
             document.getElementById('weeklyTarget').textContent = `${weeklyCount}/${targets.weekly}`;
-            
-            // 总打卡次数
+
+            const makeupCount = getMonthlyMakeupCount();
+            const makeupCountElement = document.getElementById('makeupCount');
+            if (makeupCountElement) {
+                makeupCountElement.textContent = `${makeupCount}/${targets.makeup}`;
+            }
+
             document.getElementById('totalWorkouts').textContent = workouts.length;
             document.getElementById('recordCount').textContent = `共${workouts.length}条记录`;
         }
@@ -509,12 +558,13 @@
             }
             
             historyList.innerHTML = workouts.slice(0, 10).map(workout => `
-                <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 hover:bg-gray-100 transition-all">
+                <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 hover:bg-gray-100 transition-all ${workout.isMakeup ? 'border-orange-200' : ''}">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
                             <span class="text-xl">${getWorkoutEmoji(workout.type)}</span>
                             <span class="font-bold">${workout.type}</span>
                             <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">${workout.date}</span>
+                            ${workout.isMakeup ? '<span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">📌 补卡</span>' : ''}
                         </div>
                         <button onclick="deleteWorkout(${workout.id})" class="text-red-400 hover:text-red-600 transition-all">
                             <i class="fa fa-trash-o"></i>
