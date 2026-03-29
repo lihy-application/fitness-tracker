@@ -73,6 +73,200 @@
             }
         }
     </style>
+    <!-- 内联 CSS 回退样式 - 当 Tailwind CDN 加载失败时使用 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #e0fffc 50%, #f0fdfa 100%);
+            min-height: 100vh;
+            color: #2A2A2A;
+            line-height: 1.6;
+        }
+        .max-w-7xl { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+        .max-w-6xl { max-width: 72rem; margin: 0 auto; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-6, .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .mb-2, .mb-4, .mb-8 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-2, .mt-4 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .grid-cols-7 { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-5xl { font-size: 3rem; }
+        .bg-white { background-color: white; }
+        .bg-gradient-to-r { background: linear-gradient(to right, #4ECDC4, #45B7D1); }
+        .bg-primary { background-color: #4ECDC4; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-gray-100 { background-color: #f3f4f6; }
+        .bg-orange-50 { background-color: #fff7ed; }
+        .bg-success { background-color: #96CEB4; }
+        .bg-warning { background-color: #FFEAA7; }
+        .bg-info { background-color: #A8E6CF; }
+        .bg-primary\/20 { background-color: rgba(78, 205, 196, 0.2); }
+        .bg-primary\/10 { background-color: rgba(78, 205, 196, 0.1); }
+        .text-white { color: white; }
+        .text-gray-400, .text-gray-500, .text-gray-600 { color: #6b7280; }
+        .text-gray-500 { color: #6b7280; }
+        .text-gray-600 { color: #4b5563; }
+        .text-primary { color: #4ECDC4; }
+        .text-success { color: #96CEB4; }
+        .text-warning { color: #FFEAA7; }
+        .text-info { color: #A8E6CF; }
+        .text-orange-600 { color: #ea580c; }
+        .text-orange-700 { color: #c2410c; }
+        .text-red-400 { color: #f87171; }
+        .text-red-600 { color: #dc2626; }
+        .rounded-xl, .rounded-2xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .p-3, .p-4, .p-5, .p-6 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-5 { padding: 1.25rem; }
+        .p-6 { padding: 1.5rem; }
+        .py-2, .py-3, .py-4 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .px-2, .px-3, .px-6 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .w-full { width: 100%; }
+        .w-4, .w-10, .w-12 { width: 1rem; }
+        .w-10 { width: 2.5rem; }
+        .w-12 { width: 3rem; }
+        .h-4, .h-10, .h-12 { height: 1rem; }
+        .h-10 { height: 2.5rem; }
+        .h-12 { height: 3rem; }
+        .border { border: 1px solid #e5e7eb; }
+        .border-2 { border: 2px solid rgba(78, 205, 196, 0.3); }
+        .border-gray-100, .border-gray-200, .border-gray-300 { border-color: #e5e7eb; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .border-gray-300 { border-color: #d1d5db; }
+        .border-orange-200 { border-color: #fed7aa; }
+        .border-primary { border-color: #4ECDC4; }
+        .border-primary\/30 { border-color: rgba(78, 205, 196, 0.3); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .transition-all { transition: all 0.3s ease; }
+        .outline-none { outline: none; }
+        .resize-none { resize: none; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .hidden { display: none; }
+        .z-50 { z-index: 50; }
+        .fixed { position: fixed; }
+        .bottom-6 { bottom: 1.5rem; }
+        .left-1\/2 { left: 50%; }
+        .transform { transform: translate(-50%, 0); }
+        .opacity-0 { opacity: 0; }
+        .pointer-events-none { pointer-events: none; }
+        .opacity-1 { opacity: 1; }
+        .lg\\:col-span-1 { grid-column: span 1; }
+        .lg\\:col-span-2 { grid-column: span 2; }
+        .lg\\:col-span-3 { grid-column: span 3; }
+        .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .scale-110 { transform: scale(1.1); }
+        .max-h-96 { max-height: 24rem; }
+        .overflow-y-auto { overflow-y: auto; }
+        .pr-2 { padding-right: 0.5rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .ml-4 { margin-left: 1rem; }
+        @media (min-width: 1024px) {
+            .lg\\:col-span-1 { grid-column: span 1; }
+            .lg\\:col-span-2 { grid-column: span 2; }
+            .lg\\:col-span-3 { grid-column: span 3; }
+            .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (min-width: 768px) {
+            .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+        button, input, select, textarea {
+            font-family: inherit;
+            font-size: inherit;
+        }
+        button { cursor: pointer; border: none; }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid rgba(78, 205, 196, 0.3);
+            border-radius: 0.75rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #4ECDC4;
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+        }
+        button {
+            background: linear-gradient(to right, #4ECDC4, #45B7D1);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.08);
+        }
+        .bg-gradient-to-r {
+            background: linear-gradient(to right, #4ECDC4, #45B7D1);
+        }
+        .bg-clip-text {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h1 { font-size: clamp(2rem, 5vw, 3rem); }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(78, 205, 196, 0.2);
+        }
+        .cute-border {
+            border: 2px solid #4ECDC4;
+            border-radius: 1rem;
+        }
+        .cute-shadow {
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05);
+        }
+        .cute-hover {
+            transition: all 0.3s ease;
+        }
+        .cute-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.08);
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-sky-50 via-cyan-50 to-teal-50 min-h-screen text-dark">
     <header class="text-center py-8 px-4">
