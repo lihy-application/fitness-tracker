@@ -334,22 +334,21 @@
                 isMakeup,
                 timestamp: Date.now()
             };
-                timestamp: Date.now()
-            };
-            
+
             workouts.unshift(newWorkout);
             localStorage.setItem('fitnessWorkouts', JSON.stringify(workouts));
-            
+
             // 重置表单
             document.getElementById('workoutForm').reset();
-            
+            document.getElementById('workoutDate').value = todayStr;
+
             // 显示成功提示
             const toast = document.getElementById('successToast');
             toast.style.opacity = '1';
             setTimeout(() => {
                 toast.style.opacity = '0';
             }, 2000);
-            
+
             // 更新界面
             renderCalendar();
             updateStats();
@@ -360,27 +359,27 @@
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            
+
             // 更新月份标题
             const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
             document.getElementById('currentMonth').textContent = `${year}年 ${monthNames[month]}`;
-            
+
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const calendarGrid = document.getElementById('calendarGrid');
             calendarGrid.innerHTML = '';
-            
+
             // 填充空白
             for (let i = 0; i < firstDay; i++) {
                 const emptyCell = document.createElement('div');
                 emptyCell.className = 'calendar-day bg-transparent';
                 calendarGrid.appendChild(emptyCell);
             }
-            
+
             // 填充日期
             const today = new Date();
             const todayStr = today.toISOString().split('T')[0];
-            
+
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const hasWorkout = workouts.some(w => w.date === dateStr);
@@ -429,24 +428,24 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
             // 计算连续打卡天数
             let streak = calculateStreak();
             document.getElementById('streak').textContent = streak;
-            
+
             // 计算本月运动时长
             const thisMonth = new Date().toISOString().slice(0, 7);
             const monthlyWorkouts = workouts.filter(w => w.date.startsWith(thisMonth));
             const monthlyHours = (monthlyWorkouts.reduce((sum, w) => sum + w.duration, 0) / 60).toFixed(1);
             document.getElementById('monthlyHours').textContent = monthlyHours;
-            
+
             // 本周目标进度
             const startOfWeek = new Date();
             startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
             const endOfWeek = new Date(startOfWeek);
             endOfWeek.setDate(endOfWeek.getDate() + 6);
-            
+
             const weeklyCount = workouts.filter(w => {
                 const workoutDate = new Date(w.date);
                 return workoutDate >= startOfWeek && workoutDate <= endOfWeek;
             }).length;
-            
+
             document.getElementById('weeklyTarget').textContent = `${weeklyCount}/${targets.weekly}`;
 
             // 更新补打卡次数
@@ -464,42 +463,42 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
         // 计算连续打卡天数
         function calculateStreak() {
             if (workouts.length === 0) return 0;
-            
+
             let streak = 0;
             const today = new Date();
             let currentDate = new Date(today);
-            
+
             // 按日期排序
             const workoutDates = new Set(workouts.map(w => w.date));
-            
+
             // 检查今天
             const todayStr = today.toISOString().split('T')[0];
             let currentDateStr = todayStr;
-            
+
             // 包括今天如果打卡了的话
             if (workoutDates.has(currentDateStr)) {
                 streak++;
             }
-            
+
             // 往前数
             while (true) {
                 currentDate.setDate(currentDate.getDate() - 1);
                 currentDateStr = currentDate.toISOString().split('T')[0];
-                
+
                 if (workoutDates.has(currentDateStr)) {
                     streak++;
                 } else {
                     break;
                 }
             }
-            
+
             return streak;
         }
 
         // 渲染历史记录
         function renderHistory() {
             const historyList = document.getElementById('historyList');
-            
+
             if (workouts.length === 0) {
                 historyList.innerHTML = `
                     <div class="text-center py-10 text-gray-400">
@@ -509,7 +508,7 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
                 `;
                 return;
             }
-            
+
             historyList.innerHTML = workouts.slice(0, 10).map(workout => `
                 <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 hover:bg-gray-100 transition-all ${workout.isMakeup ? 'border-orange-200' : ''}">
                     <div class="flex items-center justify-between mb-2">
