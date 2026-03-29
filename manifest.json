@@ -2,7 +2,7 @@
   "name": "小P健身打卡助手",
   "short_name": "健身打卡",
   "description": "清爽打卡 · 轻松记录每一次运动",
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#F0F9FF",
   "theme_color": "#4ECDC4",
