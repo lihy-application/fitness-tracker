@@ -459,15 +459,18 @@
                 if (isMakeup) {
                     bgColor = 'workout'; // 补打卡同样显示为已打卡
                 }
-                dayCell.className = `calendar-day ${bgColor} ${isToday ? 'border-2 border-primary scale-110' : ''}`;
-                dayCell.textContent = day;
+                dayCell.className = `calendar-day ${bgColor} ${isToday ? 'border-2 border-primary scale-110' : ''} ${isMakeup ? 'relative' : ''}`;
+                
+                // 创建日期文本
+                const dayText = document.createElement('span');
+                dayText.textContent = day;
+                dayCell.appendChild(dayText);
                 
                 // 如果是补打卡，添加标记
                 if (isMakeup) {
                     const makeupBadge = document.createElement('span');
                     makeupBadge.className = 'absolute top-0 right-0 text-xs';
                     makeupBadge.textContent = '📌';
-                    dayCell.style.position = 'relative';
                     dayCell.appendChild(makeupBadge);
                 }
                 
