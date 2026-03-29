@@ -11,22 +11,6 @@
     <meta name="theme-color" content="#4ECDC4">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
     <link rel="manifest" href="manifest.json">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
-    <style>
-        /* 防止未加载时的闪烁 */
-        body {
-            visibility: visible;
-        }
-        /* 等待资源加载 */
-        .loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-        }
-    </style>
     <script>
         tailwind.config = {
             theme: {
@@ -90,11 +74,7 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-sky-50 via-cyan-50 to-teal-50 min-h-screen text-dark opacity-0">
-    <div id="loading" class="loading">
-        <div class="text-2xl">💪</div>
-    </div>
-    <div id="app" style="visibility: hidden;">
+<body class="bg-gradient-to-br from-sky-50 via-cyan-50 to-teal-50 min-h-screen text-dark">
     <header class="text-center py-8 px-4">
         <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             💪 小P健身打卡助手
@@ -229,6 +209,7 @@
                         <div class="text-center text-gray-500 font-bold py-2">四</div>
                         <div class="text-center text-gray-500 font-bold py-2">五</div>
                         <div class="text-center text-gray-500 font-bold py-2">六</div>
+                        <div class="text-center text-gray-500 font-bold py-2">六</div>
                     </div>
                     <div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
                     <div class="flex items-center justify-center gap-4 mt-4">
@@ -264,11 +245,6 @@
                 </div>
             </div>
         </div>
-    </main>
-
-    <foote                        </div>
-                    </div>
-    </div>
     </main>
 
     <footer class="text-center py-6 text-gray-500 text-sm">
@@ -333,7 +309,6 @@
             }
         }
 
-    <script>
         // 数据存储
         let workouts = JSON.parse(localStorage.getItem('fitnessWorkouts')) || [];
         let targets = { weekly: 4, monthly: 20, makeup: 3 };
@@ -359,15 +334,6 @@
                 dateInput.value = today;
             }
             init();
-        });
-
-        // 资源加载完成后显示应用
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('app').style.visibility = 'visible';
-                document.body.classList.remove('opacity-0');
-            }, 300);
         });
 
         function init() {
@@ -538,11 +504,11 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
             endOfWeek.setDate(endOfWeek.getDate() + 6);
 
             const today = new Date();
-            today.setHours(12, 0, 0, 0); // 设置为中午12点
+            today.setHours(12, 0, 0, 0);
 
             const weeklyCount = workouts.filter(w => {
                 const workoutDate = new Date(w.date);
-                workoutDate.setHours(12, 0, 0, 0); // 设置为中午12点避免时区问题
+                workoutDate.setHours(12, 0, 0, 0);
                 // 补打卡（本周之前的）不计入本周目标
                 const isBeforeThisWeek = workoutDate < startOfWeek;
                 const isAfterThisWeek = workoutDate > endOfWeek;
