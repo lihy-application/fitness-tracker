@@ -11,6 +11,8 @@
     <meta name="theme-color" content="#4ECDC4">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
     <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -31,7 +33,6 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
     <style type="text/tailwindcss">
         @layer utilities {
             .content-auto {
@@ -75,28 +76,16 @@
     </style>
     <!-- 内联 CSS 回退样式 - 当 Tailwind CDN 加载失败时使用 -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
-            background: linear-gradient(135deg, #e0f2fe 0%, #e0fffc 50%, #f0fdfa 100%);
-            min-height: 100vh;
-            color: #2A2A2A;
-            line-height: 1.6;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif; background: linear-gradient(135deg, #e0f2fe 0%, #e0fffc 50%, #f0fdfa 100%); min-height: 100vh; color: #2A2A2A; line-height: 1.6; }
         .max-w-7xl { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
-        .max-w-6xl { max-width: 72rem; margin: 0 auto; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
         .px-4 { padding-left: 1rem; padding-right: 1rem; }
         .py-6, .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
-        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
-        .mb-2, .mb-4, .mb-8 { margin-bottom: 0.5rem; }
+        .pb-16 { padding-bottom: 4rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
         .mb-4 { margin-bottom: 1rem; }
         .mb-8 { margin-bottom: 2rem; }
-        .mt-2, .mt-4 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
         .mt-4 { margin-top: 1rem; }
         .gap-2 { gap: 0.5rem; }
         .gap-3 { gap: 0.75rem; }
@@ -108,7 +97,6 @@
         .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .grid-cols-7 { grid-template-columns: repeat(7, minmax(0, 1fr)); }
         .flex { display: flex; }
-        .flex-col { flex-direction: column; }
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
         .justify-center { justify-content: center; }
@@ -119,7 +107,6 @@
         .text-xs { font-size: 0.75rem; }
         .text-sm { font-size: 0.875rem; }
         .text-lg { font-size: 1.125rem; }
-        .text-xl { font-size: 1.25rem; }
         .text-2xl { font-size: 1.5rem; }
         .text-5xl { font-size: 3rem; }
         .bg-white { background-color: white; }
@@ -135,8 +122,6 @@
         .bg-primary\/10 { background-color: rgba(78, 205, 196, 0.1); }
         .text-white { color: white; }
         .text-gray-400, .text-gray-500, .text-gray-600 { color: #6b7280; }
-        .text-gray-500 { color: #6b7280; }
-        .text-gray-600 { color: #4b5563; }
         .text-primary { color: #4ECDC4; }
         .text-success { color: #96CEB4; }
         .text-warning { color: #FFEAA7; }
@@ -170,8 +155,6 @@
         .border { border: 1px solid #e5e7eb; }
         .border-2 { border: 2px solid rgba(78, 205, 196, 0.3); }
         .border-gray-100, .border-gray-200, .border-gray-300 { border-color: #e5e7eb; }
-        .border-gray-200 { border-color: #e5e7eb; }
-        .border-gray-300 { border-color: #d1d5db; }
         .border-orange-200 { border-color: #fed7aa; }
         .border-primary { border-color: #4ECDC4; }
         .border-primary\/30 { border-color: rgba(78, 205, 196, 0.3); }
@@ -189,7 +172,6 @@
         .transform { transform: translate(-50%, 0); }
         .opacity-0 { opacity: 0; }
         .pointer-events-none { pointer-events: none; }
-        .opacity-1 { opacity: 1; }
         .lg\\:col-span-1 { grid-column: span 1; }
         .lg\\:col-span-2 { grid-column: span 2; }
         .lg\\:col-span-3 { grid-column: span 3; }
@@ -210,62 +192,20 @@
         @media (min-width: 768px) {
             .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         }
-        button, input, select, textarea {
-            font-family: inherit;
-            font-size: inherit;
-        }
+        button, input, select, textarea { font-family: inherit; font-size: inherit; }
         button { cursor: pointer; border: none; }
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid rgba(78, 205, 196, 0.3);
-            border-radius: 0.75rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: #4ECDC4;
-            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
-        }
-        button {
-            background: linear-gradient(to right, #4ECDC4, #45B7D1);
-            color: white;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.08);
-        }
-        .bg-gradient-to-r {
-            background: linear-gradient(to right, #4ECDC4, #45B7D1);
-        }
-        .bg-clip-text {
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        input, select, textarea { width: 100%; padding: 0.75rem; border: 2px solid rgba(78, 205, 196, 0.3); border-radius: 0.75rem; outline: none; transition: all 0.3s ease; }
+        input:focus, select:focus, textarea:focus { border-color: #4ECDC4; box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2); }
+        button { background: linear-gradient(to right, #4ECDC4, #45B7D1); color: white; padding: 1rem; border-radius: 0.75rem; font-weight: 700; box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05); transition: all 0.3s ease; }
+        button:hover { transform: translateY(-2px); box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.08); }
+        .bg-gradient-to-r { background: linear-gradient(to right, #4ECDC4, #45B7D1); }
+        .bg-clip-text { -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         h1 { font-size: clamp(2rem, 5vw, 3rem); }
-        .card-shadow {
-            box-shadow: 0 10px 25px -5px rgba(78, 205, 196, 0.2);
-        }
-        .cute-border {
-            border: 2px solid #4ECDC4;
-            border-radius: 1rem;
-        }
-        .cute-shadow {
-            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05);
-        }
-        .cute-hover {
-            transition: all 0.3s ease;
-        }
-        .cute-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.08);
-        }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(78, 205, 196, 0.2); }
+        .cute-border { border: 2px solid #4ECDC4; border-radius: 1rem; }
+        .cute-shadow { box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05); }
+        .cute-hover { transition: all 0.3s ease; }
+        .cute-hover:hover { transform: translateY(-2px); box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.08); }
     </style>
 </head>
 <body class="bg-gradient-to-br from-sky-50 via-cyan-50 to-teal-50 min-h-screen text-dark">
@@ -372,7 +312,7 @@
                             <span class="text-sm font-medium text-orange-700">📌 本月补打卡次数</span>
                             <span class="text-lg font-bold text-orange-600" id="makeupCount">0/3</span>
                         </div>
-                        <p class="text-xs text-orange-600">每月最多可补打卡 3 次</p>
+                        <p class="text-xs text-orange-600">每月最多可补打卡 3 次,补本周的卡不计入本周目标</p>
                     </div>
                 </div>
             </div>
@@ -403,7 +343,6 @@
                         <div class="text-center text-gray-500 font-bold py-2">四</div>
                         <div class="text-center text-gray-500 font-bold py-2">五</div>
                         <div class="text-center text-gray-500 font-bold py-2">六</div>
-                        <div class="text-center text-gray-500 font-bold py-2">六</div>
                     </div>
                     <div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
                     <div class="flex items-center justify-center gap-4 mt-4">
@@ -433,7 +372,7 @@
                     <div id="historyList" class="space-y-3 max-h-96 overflow-y-auto pr-2">
                         <div class="text-center py-10 text-gray-400">
                             <div class="text-5xl mb-2">🤸</div>
-                            <p>还没有打卡记录哦，快去运动吧！</p>
+                            <p>还没有打卡记录哦,快去运动吧!</p>
                         </div>
                     </div>
                 </div>
@@ -449,7 +388,7 @@
             </button>
         </div>
         <div id="installInstructions" class="hidden mt-4 text-left bg-white rounded-xl p-4 text-xs">
-            <p class="font-bold mb-2">📱 添加到主屏幕的方法：</p>
+            <p class="font-bold mb-2">📱 添加到主屏幕的方法:</p>
             <p class="mb-1"><strong>iPhone/iPad:</strong></p>
             <p class="ml-4 text-gray-600">1. 点击底部的"分享"按钮 ⎋</p>
             <p class="ml-4 text-gray-600">2. 选择"添加到主屏幕"</p>
@@ -460,7 +399,7 @@
     </footer>
 
     <div id="successToast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg z-50 opacity-0 pointer-events-none transition-all duration-300">
-        <i class="fa fa-check-circle mr-2"></i> 打卡成功！太棒啦~ 🎉
+        <i class="fa fa-check-circle mr-2"></i> 打卡成功!太棒啦~ 🎉
     </div>
 
     <script>
@@ -560,11 +499,11 @@
             // 判断是否为补打卡
             const isMakeup = selectedDateStr !== todayStr;
 
-            // 如果是补打卡，检查补打卡次数
+            // 如果是补打卡,检查补打卡次数
             if (isMakeup) {
                 const monthlyMakeupCount = getMonthlyMakeupCount();
                 if (monthlyMakeupCount >= targets.makeup) {
-                    alert(`本月补打卡次数已用完！每月最多补打卡 ${targets.makeup} 次 😢`);
+                    alert(`本月补打卡次数已用完!每月最多补打卡 ${targets.makeup} 次 😢`);
                     return;
                 }
             }
@@ -572,7 +511,7 @@
             // 检查该日期是否已经打卡
             const alreadyWorkout = workouts.some(w => w.date === selectedDateStr);
             if (alreadyWorkout) {
-                const confirm = window.confirm(`${selectedDateStr} 已经打过卡啦，要更新当天的记录吗？`);
+                const confirm = window.confirm(`${selectedDateStr} 已经打过卡啦,要更新当天的记录吗?`);
                 if (!confirm) return;
                 workouts = workouts.filter(w => w.date !== selectedDateStr);
             }
@@ -644,7 +583,7 @@
                 dayCell.className = `calendar-day ${hasWorkout ? 'workout' : 'bg-gray-100 border border-gray-200'} ${isToday ? 'border-2 border-primary scale-110' : ''}`;
                 dayCell.textContent = day;
 
-                // 如果是补打卡，添加标记
+                // 如果是补打卡,添加标记
                 if (isMakeup) {
                     const makeupBadge = document.createElement('span');
                     makeupBadge.className = 'absolute top-0 right-0 text-xs';
@@ -658,11 +597,11 @@
                     const dayWorkouts = workouts.filter(w => w.date === dateStr);
                     if (dayWorkouts.length > 0) {
                         const workout = dayWorkouts[0];
-                        alert(`📅 ${dateStr} 打卡记录：
-运动类型：${workout.type}
-时长：${workout.duration} 分钟
-消耗：${workout.calories} 大卡
-备注：${workout.notes || '无'}
+                        alert(`📅 ${dateStr} 打卡记录:
+运动类型:${workout.type}
+时长:${workout.duration} 分钟
+消耗:${workout.calories} 大卡
+备注:${workout.notes || '无'}
 ${workout.isMakeup ? '📌 补打卡' : ''}`);
                     }
                 });
@@ -703,10 +642,10 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
             const weeklyCount = workouts.filter(w => {
                 const workoutDate = new Date(w.date);
                 workoutDate.setHours(12, 0, 0, 0);
-                // 补打卡（本周之前的）不计入本周目标
+                // 补打卡(本周之前的)不计入本周目标
                 const isBeforeThisWeek = workoutDate < startOfWeek;
                 const isAfterThisWeek = workoutDate > endOfWeek;
-                // 今天或未来日期不算补卡，计入本周目标
+                // 今天或未来日期不算补卡,计入本周目标
                 const isTodayOrFuture = workoutDate >= startOfWeek && workoutDate <= endOfWeek && !w.isMakeup;
                 return isTodayOrFuture;
             }).length;
@@ -768,7 +707,7 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
                 historyList.innerHTML = `
                     <div class="text-center py-10 text-gray-400">
                         <div class="text-5xl mb-2">🤸</div>
-                        <p>还没有打卡记录哦，快去运动吧！</p>
+                        <p>还没有打卡记录哦,快去运动吧!</p>
                     </div>
                 `;
                 return;
@@ -821,7 +760,7 @@ ${workout.isMakeup ? '📌 补打卡' : ''}`);
 
         // 删除打卡记录
         function deleteWorkout(id) {
-            if (confirm('确定要删除这条打卡记录吗？')) {
+            if (confirm('确定要删除这条打卡记录吗?')) {
                 workouts = workouts.filter(w => w.id !== id);
                 localStorage.setItem('fitnessWorkouts', JSON.stringify(workouts));
                 renderCalendar();
